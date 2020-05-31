@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="traceDateTextColor" format="color|reference"></attr>
+    <attr name="coldStartTextColor" format="color|reference"></attr>
+    <attr name="hotStartTextColor" format="color|reference"></attr>
+    <attr name="chainNameTextColor" format="color|reference"></attr>
+    <attr name="chainAllTimeTextColor" format="color|reference"></attr>
+    <attr name="tagTextColor" format="color|reference"></attr>
+    <attr name="divideTimeTextColor" format="color|reference"></attr>
+
+    <declare-styleable name="TraceChainView">
+        <attr name="mtraceDateTextColor" format="color|reference"></attr>
+        <attr name="mchainNameTextColor" format="color|reference"></attr>
+        <attr name="mchainAllTimeTextColor" format="color|reference"></attr>
+        <attr name="mtagTextColor" format="color|reference"></attr>
+        <attr name="mdivideTimeTextColor" format="color|reference"></attr>
+    </declare-styleable>
+</resources>

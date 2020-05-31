@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dragonforest.library.app_start_record">
+
+    <application>
+        <activity
+            android:name=".RecordLogsActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/RecordLogTheme"></activity>
+    </application>
+</manifest>
