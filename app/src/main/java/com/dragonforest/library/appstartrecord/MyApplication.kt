@@ -27,14 +27,14 @@ class MyApplication: Application() {
     }
 
     private fun initSDK3() {
-        Thread.sleep(10)
+        Thread.sleep(200)
     }
 
     private fun initSDK2() {
-        Thread.sleep(15)
+        Thread.sleep(300)
     }
 
     private fun initSDK1() {
-        Thread.sleep(20)
+        Thread.sleep(1500)
     }
 }

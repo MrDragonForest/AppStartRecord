@@ -1,6 +1,7 @@
 package com.dragonforest.library.app_start_record.timetrace
 
 import android.content.Context
+import com.dragonforest.library.app_start_record.database.entity.StartMode
 import com.dragonforest.library.app_start_record.database.entity.TimeTraceEntity
 import com.dragonforest.library.app_start_record.util.Logger
 import com.google.gson.Gson
@@ -25,10 +26,10 @@ class ReportTask(
         var traceEntity = TimeTraceEntity()
         if (isColdStart()) {
             traceEntity.title = "冷启动"
-            traceEntity.startMode = 0
+            traceEntity.startMode = StartMode.COLD_START
         } else {
             traceEntity.title = "热启动"
-            traceEntity.startMode = 1
+            traceEntity.startMode = StartMode.HOT_START
         }
         traceEntity.traceDate = Date()
         traceEntity.traceContent = Gson().toJson(chains)

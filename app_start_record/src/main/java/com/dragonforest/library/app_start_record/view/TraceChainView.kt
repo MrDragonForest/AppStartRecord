@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.dragonforest.library.app_start_record.R
+import com.dragonforest.library.app_start_record.database.entity.StartMode
 import com.dragonforest.library.app_start_record.timetrace.TraceChain
 import com.dragonforest.library.app_start_record.timetrace.TraceTag
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 /**
@@ -18,26 +20,41 @@ import kotlin.collections.LinkedHashMap
  */
 class TraceChainView : LinearLayout {
 
-    var chainTextColor:Int = Color.BLUE
-    var allTimeTextColor:Int = Color.RED
-    var tagTextColor:Int = Color.GRAY
+    var chainTextColor: Int = Color.BLUE
+    var allTimeTextColor: Int = Color.RED
+    var tagTextColor: Int = Color.GRAY
     var timeDivideTextColor = Color.YELLOW
+
+    var startMode: Int = StartMode.COLD_START
+    var avgColdChains = HashMap<String, Long>()
+    var avgHotChains = HashMap<String, Long>()
+
     constructor(context: Context) : super(context) {
         initView(context)
     }
 
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
         initView(context)
-        initAttrs(context,attributeSet)
+        initAttrs(context, attributeSet)
     }
 
     private fun initAttrs(context: Context, attributeSet: AttributeSet) {
         val obtainStyledAttributes =
             context.obtainStyledAttributes(attributeSet, R.styleable.TraceChainView)
-        chainTextColor = obtainStyledAttributes.getColor(R.styleable.TraceChainView_mchainNameTextColor,Color.BLUE)
-        allTimeTextColor = obtainStyledAttributes.getColor(R.styleable.TraceChainView_mchainAllTimeTextColor,Color.RED)
-        tagTextColor = obtainStyledAttributes.getColor(R.styleable.TraceChainView_mtagTextColor,Color.GRAY)
-        timeDivideTextColor = obtainStyledAttributes.getColor(R.styleable.TraceChainView_mdivideTimeTextColor,context.resources.getColor(android.R.color.holo_orange_dark))
+        chainTextColor = obtainStyledAttributes.getColor(
+            R.styleable.TraceChainView_mchainNameTextColor,
+            Color.BLUE
+        )
+        allTimeTextColor = obtainStyledAttributes.getColor(
+            R.styleable.TraceChainView_mchainAllTimeTextColor,
+            Color.RED
+        )
+        tagTextColor =
+            obtainStyledAttributes.getColor(R.styleable.TraceChainView_mtagTextColor, Color.GRAY)
+        timeDivideTextColor = obtainStyledAttributes.getColor(
+            R.styleable.TraceChainView_mdivideTimeTextColor,
+            context.resources.getColor(android.R.color.holo_orange_dark)
+        )
         obtainStyledAttributes.recycle()
     }
 
@@ -46,13 +63,18 @@ class TraceChainView : LinearLayout {
         setPadding(10, 5, 10, 5)
     }
 
+    fun setAvgData(avgColdMap: HashMap<String, Long>, avgHotMap: HashMap<String, Long>) {
+        this.avgColdChains = avgColdMap
+        this.avgHotChains = avgHotMap
+    }
+
     fun setChainsData(chains: LinkedHashMap<String, TraceChain>) {
         removeAllViews()
         chains.forEach {
             var chainName = it.key
             var chain = it.value
             addChainTitleView(chainName)
-            addAllTimeView(it.value.allTime())
+            addAllTimeView(chainName, it.value.allTime())
             for (index in 0 until chain.size()) {
                 addTagView(index, chain?.tagList)
             }
@@ -73,12 +95,12 @@ class TraceChainView : LinearLayout {
         addView(tv_chain_name, lp)
     }
 
-    private fun addAllTimeView(allTime: Long) {
+    private fun addAllTimeView(chainName: String, allTime: Long) {
         var tv_all_time = TextView(context)
         tv_all_time.textSize = 13f
         tv_all_time.setPadding(8, 2, 8, 5)
         tv_all_time.setTextColor(allTimeTextColor)
-        tv_all_time.text = "(${allTime}ms)"
+        tv_all_time.text = "本次(${allTime}ms)" + getChainAvgTime(chainName)
         var lp =
             LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         lp.leftMargin = 10
@@ -96,7 +118,7 @@ class TraceChainView : LinearLayout {
             tv_tag_name.textSize = 16f
             tv_tag_name.setPadding(8, 5, 8, 5)
             tv_tag_name.setTextColor(tagTextColor)
-            var drawableLeft = context.resources.getDrawable(R.drawable.icon_svg_tag_down)
+            var drawableLeft = context.resources.getDrawable(R.drawable.icon_svg_line)
             drawableLeft.setBounds(0, 0, drawableLeft.minimumWidth, drawableLeft.minimumHeight)
             tv_tag_name.setCompoundDrawables(drawableLeft, null, null, null)
             tv_tag_name.text = it[index].tagName
@@ -106,6 +128,26 @@ class TraceChainView : LinearLayout {
             )
             lp.leftMargin = 50
             addView(tv_tag_name, lp)
+        }
+    }
+
+    private fun getChainAvgTime(chainName: String): String {
+        when (startMode) {
+            StartMode.COLD_START -> {
+                if (avgColdChains.containsKey(chainName))
+                    return " 平均(${avgColdChains.get(chainName)}ms)"
+                else
+                    return ""
+            }
+            StartMode.HOT_START -> {
+                if (avgHotChains.containsKey(chainName))
+                    return " 平均(${avgHotChains.get(chainName)}ms)"
+                else
+                    return ""
+            }
+            else->{
+                return ""
+            }
         }
     }
 
