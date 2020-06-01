@@ -21,8 +21,16 @@ class ReportTask(
     val TAG = this.javaClass.simpleName
 
     override fun run() {
-        var filterChain = chains.filter { it.value.size() > 0 }
-        if (filterChain.size == 0) return
+        val validChainList = chains.map {
+            it.value.filterBeforeBegin()
+        }.filterNotNull()
+        var validChainMap = LinkedHashMap<String, TraceChain>()
+        validChainList?.forEach { chain ->
+            chain?.let {
+                validChainMap[it.chainName!!] = it
+            }
+        }
+        if (validChainMap.size == 0) return
         var traceEntity = TimeTraceEntity()
         if (isColdStart()) {
             traceEntity.title = "冷启动"
@@ -32,7 +40,7 @@ class ReportTask(
             traceEntity.startMode = StartMode.HOT_START
         }
         traceEntity.traceDate = Date()
-        traceEntity.traceContent = Gson().toJson(chains)
+        traceEntity.traceContent = Gson().toJson(validChainMap)
         Logger.i(TAG, "report:->\n${traceEntity.traceContent}")
         reportStrategys?.forEach {
             it.report(context, traceEntity)

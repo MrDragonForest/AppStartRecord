@@ -7,6 +7,7 @@ import com.dragonforest.library.app_start_record.RecordLogsActivity
 import com.dragonforest.library.app_start_record.timetrace.ChainField
 import com.dragonforest.library.app_start_record.timetrace.TagField
 import com.dragonforest.library.app_start_record.timetrace.TraceTimeMonitor
+import com.dragonforest.library.app_start_record.util.Logger
 import com.dragonforest.library.appstartrecord.util.ClickUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         TraceTimeMonitor.trace(ChainField.CHAIN_MAIN_ACTIVITY, TagField.ONCREATE)
         TraceTimeMonitor.report(this)
-
         initView()
     }
 

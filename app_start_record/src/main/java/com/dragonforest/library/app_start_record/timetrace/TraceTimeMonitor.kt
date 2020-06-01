@@ -48,27 +48,37 @@ object TraceTimeMonitor {
         if (chainName == ChainField.CHAIN_APPLICATION && tagName == TagField.ATTACH_BASE_CONTEXT) {
             clear()
         }
-        if (isStartTagInChain) {
-            clearChain(chainName)
+//        if (isStartTagInChain) {
+//            clearChain(chainName)
+//            var chain = TraceChain()
+//            chain.chainName = chainName
+//            chain?.beginTagName = tagName
+//            chains.put(chainName, chain)
+//        }
+//        val chain = chains.get(chainName)
+//        if (!TextUtils.isEmpty(chain?.beginTagName)) {
+//            var curr = System.currentTimeMillis()
+//            chain?.add(TraceTag(tagName, curr))
+//            chain?.let {
+//                var size = it.size()
+//                if (size > 1) {
+//                    var timeDivide = curr - chain.tagList?.get(size - 2)?.tagTimeStamp!!
+//                    Logger.i(TAG, "耗时：${timeDivide}ms")
+//                }
+//            }
+//
+//            Logger.i(TAG, "trace-> ${chainName}/${tagName}")
+//        }
+        if (!chains.containsKey(chainName)) {
             var chain = TraceChain()
             chain.chainName = chainName
+            chains[chainName] = chain
+        }
+        var chain = chains[chainName]
+        if (isStartTagInChain) {
             chain?.beginTagName = tagName
-            chains.put(chainName, chain)
         }
-        val chain = chains.get(chainName)
-        if (!TextUtils.isEmpty(chain?.beginTagName)) {
-            var curr = System.currentTimeMillis()
-            chain?.add(TraceTag(tagName, curr))
-            chain?.let {
-                var size = it.size()
-                if (size > 1) {
-                    var timeDivide = curr - chain.tagList?.get(size - 2)?.tagTimeStamp!!
-                    Logger.i(TAG, "耗时：${timeDivide}ms")
-                }
-            }
-
-            Logger.i(TAG, "trace-> ${chainName}/${tagName}")
-        }
+        chain?.add(TraceTag(tagName, System.currentTimeMillis()))
     }
 
     fun report(context: Context) {

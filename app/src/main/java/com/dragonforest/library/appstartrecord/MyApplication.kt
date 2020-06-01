@@ -1,9 +1,13 @@
 package com.dragonforest.library.appstartrecord
 
 import android.app.Application
+import android.content.Context
+import com.dragonforest.library.app_start_record.database.entity.TimeTraceEntity
 import com.dragonforest.library.app_start_record.timetrace.ChainField
+import com.dragonforest.library.app_start_record.timetrace.ReportStrategy
 import com.dragonforest.library.app_start_record.timetrace.TagField
 import com.dragonforest.library.app_start_record.timetrace.TraceTimeMonitor
+import com.dragonforest.library.app_start_record.util.Logger
 import com.dragonforest.library.appstartrecord.constrants.MyTagField
 
 /**
@@ -22,8 +26,14 @@ class MyApplication: Application() {
 
         initSDK3()
         TraceTimeMonitor.trace(ChainField.CHAIN_APPLICATION, MyTagField.INIT_SDK3)
-
         TraceTimeMonitor.trace(ChainField.CHAIN_APPLICATION, TagField.ONCREATE_OVER)
+
+        TraceTimeMonitor.addReportStategy(object:ReportStrategy{
+            override fun report(context: Context, traceEntity: TimeTraceEntity) {
+                //上传数据到服务器
+                Logger.i("report","上传到服务器")
+            }
+        })
     }
 
     private fun initSDK3() {

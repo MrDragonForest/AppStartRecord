@@ -34,4 +34,25 @@ class TraceChain {
         }
         return 0L
     }
+
+    fun filterBeforeBegin(): TraceChain? {
+        if (beginTagName == null) {
+            return null
+        }
+        tagList?.let {
+            val iterator = it.iterator()
+            while (iterator.hasNext()) {
+                var tag = iterator.next()
+                if (tag.tagName != beginTagName) {
+                    it.remove(tag)
+                } else {
+                    break
+                }
+            }
+        }
+        if (tagList?.size == 0) {
+            return null
+        }
+        return this
+    }
 }
