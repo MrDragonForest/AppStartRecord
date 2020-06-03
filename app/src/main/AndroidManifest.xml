@@ -10,8 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".SplashActivity">
+<!--        <activity android:name=".main2.OptimizeMainActivity"></activity>-->
+        <activity
+            android:name=".main1.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".main2.OptimizeMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

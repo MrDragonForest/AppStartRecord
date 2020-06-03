@@ -7,4 +7,5 @@ package com.dragonforest.library.appstartrecord.constrants
  */
 object MyChainField {
     const val CHAIN_MYACTIVITY = "MyActivity"
+    const val CHAIN_OPTIMIZE_MAINACTIVITY = "OptimizeMainActivity"
 }

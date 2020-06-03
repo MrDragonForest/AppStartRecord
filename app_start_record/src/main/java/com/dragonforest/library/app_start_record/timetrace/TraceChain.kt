@@ -44,7 +44,7 @@ class TraceChain {
             while (iterator.hasNext()) {
                 var tag = iterator.next()
                 if (tag.tagName != beginTagName) {
-                    it.remove(tag)
+                    iterator.remove()
                 } else {
                     break
                 }

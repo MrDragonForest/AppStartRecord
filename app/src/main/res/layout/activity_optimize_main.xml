@@ -4,8 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main1.SplashActivity"
-    android:background="@drawable/app_splash"
-    android:id="@+id/cl_splash">
+    tools:context=".main2.OptimizeMainActivity">
 
+    <ViewStub
+        android:id="@+id/vs_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/activity_main"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fl_splash"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
