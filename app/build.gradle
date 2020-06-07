@@ -39,4 +39,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(":app_start_record")
+    androidTestImplementation "androidx.benchmark:benchmark-junit4:1.0.0-beta01"
 }
